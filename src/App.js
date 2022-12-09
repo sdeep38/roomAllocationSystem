@@ -1,10 +1,10 @@
 import './App.css';
 import { createBrowserRouter, RouterProvider, Route, Link, Outlet, } from "react-router-dom";
-import Home from './components/Home';
+import Home from './pages/Home';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import Register from './components/Register';
-import Login from './components/Login';
+import Register from './pages/Register';
+import Login from './pages/Login';
 
 const BaseLayout = () => {
   return (
@@ -22,7 +22,6 @@ const router = createBrowserRouter([
     children: [
 
       //home url
-      
 
       //about url
       {

@@ -25,7 +25,7 @@ export default function Register() {
         try{
             const res = await axios.post("/auth/register", inputs)
             console.log(res)
-            // navigate("/login");
+            navigate("/login");
         }
         catch(err){
             setError(err.response.data)
