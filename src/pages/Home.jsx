@@ -8,160 +8,160 @@ import '../styles/Home.css'
 
 export default function Home() {
 
-  const { currentUser } = useContext(AuthContext)
+    const { currentUser } = useContext(AuthContext)
 
-  const blockOptions = [
-    {
-      label: "A",
-      value: "A",
-    },
-    {
-      label: "B",
-      value: "B",
-    },
-    {
-      label: "C",
-      value: "C",
-    },
-    {
-      label: "D",
-      value: "D",
-    },
-    {
-      label: "E",
-      value: "E",
-    },
-  ]
+    const blockOptions = [
+        {
+            label: "A",
+            value: "A",
+        },
+        {
+            label: "B",
+            value: "B",
+        },
+        {
+            label: "C",
+            value: "C",
+        },
+        {
+            label: "D",
+            value: "D",
+        },
+        {
+            label: "E",
+            value: "E",
+        },
+    ]
 
-  const floorOptions = [
-    {
-      label: "Ground",
-      value: "0",
-    },
-    {
-      label: "First",
-      value: "1",
-    },
-    {
-      label: "Second",
-      value: "2",
-    },
-    {
-      label: "Third",
-      value: "3",
-    },
-  ]
+    const floorOptions = [
+        {
+            label: "Ground",
+            value: "0",
+        },
+        {
+            label: "First",
+            value: "1",
+        },
+        {
+            label: "Second",
+            value: "2",
+        },
+        {
+            label: "Third",
+            value: "3",
+        },
+    ]
 
-  const handleOptionChange = (e) => {
-    console.log('User Selected value : ', e.target.value)
-  }
-
-  const [students, setStudents] = useState([])
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get('/users/getUsers')
-        setStudents(res.data)
-      } catch (err) {
-        console.log(err)
-      }
+    const handleOptionChange = (e) => {
+        console.log('User Selected value : ', e.target.value)
     }
-    fetchData();
-  }, [])
 
-  return (
-    <>
+    const [students, setStudents] = useState([])
 
-        <Navbar />
-      <div className="page-heading">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-12">
-              <div className="ui-text">
-                <h1>Welcome <span style={{ textTransform: "uppercase" }}>{currentUser?.name}</span></h1>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await axios.get('/users/getUsers')
+                setStudents(res.data)
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        fetchData();
+    }, [])
 
-      <ScrollMenu />
+    return (
+        <>
 
-      <div className="main-content">
-        <div className="container pt-5">
-          <div className="row">
-            <div className="col-md-8 col-sm-9">
-              <div className="room-view-wrapper">
-                <h2>Room Details</h2>
-                <div className="filter-form">
-                  <form className="row row-cols-lg-auto g-3 align-items-center">
-                    <div className="col-lg-4">
-                      <label className="visually-hidden" htmlFor="inlineFormSelectPref">Preference</label>
-                      <select className="form-select" id="inlineFormSelectPref" onChange={handleOptionChange}>
-                        <option>Select Floor</option>
-                        {floorOptions.map((option, index) => {
-                          return <option key={index} value={option.value}>{option.label}</option>
-                        })}
-                      </select>
+            <Navbar />
+            <div className="page-heading">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-lg-12">
+                            <div className="ui-text">
+                                <h1>Welcome <span style={{ textTransform: "uppercase" }}>{currentUser?.name}</span></h1>
+                            </div>
+                        </div>
                     </div>
-
-                    <div className="col-lg-4">
-                      <label className="visually-hidden" htmlFor="inlineFormSelectPref">Preference</label>
-                      <select className="form-select" id="inlineFormSelectPref" onChange={handleOptionChange}>
-                        <option>Select Block</option>
-                        {blockOptions.map((option, index) => {
-                          return <option key={index} value={option.value}>{option.label}</option>
-                        })}
-                      </select>
-                    </div>
-
-                    <div className="col-lg-4">
-                      <button type="submit" className="btn btn-primary">Filter</button>
-                    </div>
-                  </form>
                 </div>
-                <div className="room-view_table">
-                  <table className="table">
-                    <thead className="table-light">
-                      <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Room Number</th>
-                        <th scope="col">Student Name</th>
-                        <th scope="col">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
+            </div>
 
-                      {students.map((student, index) => {
-                        return <tr key={index}>
-                        <th scope="row">{student.id}</th>
-                        <td>{student.block} - {student.room}</td>
-                        <td>{student.name}</td>
-                        <td><Link>View</Link></td>
-                      </tr>
-                      })}
+            <ScrollMenu />
 
-                    </tbody>
-                  </table>
+            <div className="main-content">
+                <div className="container pt-5">
+                    <div className="row">
+                        <div className="col-md-8 col-sm-9">
+                            <div className="room-view-wrapper">
+                                <h2>Room Details</h2>
+                                <div className="filter-form">
+                                    <form className="row row-cols-lg-auto g-3 align-items-center">
+                                        <div className="col-lg-4">
+                                            <label className="visually-hidden" htmlFor="inlineFormSelectPref">Preference</label>
+                                            <select className="form-select" id="inlineFormSelectPref" onChange={handleOptionChange}>
+                                                <option>Select Floor</option>
+                                                {floorOptions.map((option, index) => {
+                                                    return <option key={index} value={option.value}>{option.label}</option>
+                                                })}
+                                            </select>
+                                        </div>
+
+                                        <div className="col-lg-4">
+                                            <label className="visually-hidden" htmlFor="inlineFormSelectPref">Preference</label>
+                                            <select className="form-select" id="inlineFormSelectPref" onChange={handleOptionChange}>
+                                                <option>Select Block</option>
+                                                {blockOptions.map((option, index) => {
+                                                    return <option key={index} value={option.value}>{option.label}</option>
+                                                })}
+                                            </select>
+                                        </div>
+
+                                        <div className="col-lg-4">
+                                            <button type="submit" className="btn btn-primary">Filter</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div className="room-view_table">
+                                    <table className="table">
+                                        <thead className="table-light">
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Room Number</th>
+                                                <th scope="col">Student Name</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            {students.map((student, index) => {
+                                                return <tr key={index}>
+                                                    <th scope="row">{student.id}</th>
+                                                    <td>{student.block} - {student.room}</td>
+                                                    <td>{student.name}</td>
+                                                    <td><Link>View</Link></td>
+                                                </tr>
+                                            })}
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-4 col-sm-3">
+                            <div className="block-right">
+                                <h4>Student Details</h4>
+                                <ul className="list-group list-group-flush">
+                                    <li className="list-group-item">Name<Link style={{ float: "right" }}>{currentUser.name}</Link></li>
+                                    <li className="list-group-item">Roll No<Link style={{ float: "right" }}>{currentUser.roll}</Link></li>
+                                    <li className="list-group-item">Email id<Link style={{ float: "right" }}>{currentUser.email}</Link></li>
+                                    <li className="list-group-item">Contact No<Link style={{ float: "right" }}>{currentUser.phone}</Link></li>
+                                    <li className="list-group-item">Room No<Link style={{ float: "right" }}>{currentUser.block} - {currentUser.room}</Link></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-            <div className="col-md-4 col-sm-3">
-              <div className="block-right">
-                <h4>Student Details</h4>
-                <ul className="list-group list-group-flush">
-                  <li className="list-group-item">Name<Link style={{ float: "right" }}>{currentUser.name}</Link></li>
-                  <li className="list-group-item">Roll No<Link style={{ float: "right" }}>{currentUser.roll}</Link></li>
-                  <li className="list-group-item">Email id<Link style={{ float: "right" }}>{currentUser.email}</Link></li>
-                  <li className="list-group-item">Contact No<Link style={{ float: "right" }}>{currentUser.phone}</Link></li>
-                  <li className="list-group-item">Room No<Link style={{ float: "right" }}>{currentUser.block} - {currentUser.room}</Link></li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  )
+        </>
+    )
 }
