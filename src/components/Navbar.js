@@ -4,6 +4,7 @@ import { AuthContext } from '../context/authContext'
 import '../styles/Home.css'
 import profileIcon from '../images/profile-icon.png'
 import profileImage from '../images/profile.jpg'
+import { useState } from 'react'
 
 export default function Navbar() {
 
@@ -16,6 +17,10 @@ export default function Navbar() {
     navigate('/login')
   }
 
+  const [menuState, setMenuState] = useState(false)
+
+
+
   return (
     <header>
       <div className="navigation">
@@ -25,7 +30,7 @@ export default function Navbar() {
               <nav className="navbar navbar-expand-lg">
 
                 <div className="container-fluid">
-                  <Link className="navbar-brand" to={'/'}>rk hall of residence</Link>
+                  <Link className="navbar-brand" to={'/dashboard'}>rk hall of residence</Link>
                   <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -39,24 +44,8 @@ export default function Navbar() {
                       <li className="nav-item">
                         <Link className="nav-link">Link</Link>
                       </li>
-                      <li className="nav-item dropdown">
-                        <Link className="nav-link dropdown-toggle" role="button"
-                          data-bs-toggle="dropdown" aria-expanded="false">
-                          Dropdown
-                        </Link>
-                        <ul className="dropdown-menu">
-                          <li><Link className="dropdown-item">Action</Link></li>
-                          <li><Link className="dropdown-item">Another action</Link></li>
-                          <li>
-                            <hr className="dropdown-divider" />
-                          </li>
-                          <li><Link className="dropdown-item">Something else here</Link></li>
-                        </ul>
-                      </li>
-                      <li className="nav-item">
-                        <Link className="nav-link" id="logout" onClick={handleLogout}>
-                          Logout</Link>
-                      </li>
+                      
+                      
 
                     </ul>
                     {/* <form className = "d-flex" role="search">
@@ -66,18 +55,17 @@ export default function Navbar() {
                                     </form> */}
                     <div className="top-right">
                       <Link id="user-logged" title={ currentUser?.name }>
-                        <img src={profileIcon} alt='Profile' width="40" height="36"
-                        />
+                        <img src={profileIcon} alt='Profile' width="40" height="36" onClick={() =>{setMenuState(!menuState)}}/>
                       </Link>
-                      <div className="sub-menu-wrap" id="userMenu">
+                      <div className={`sub-menu-wrap ${menuState? 'show-menu' : 'hide-menu'}`} id="userMenu">
                         <div className="sub-menu">
                           <div className="user-info">
                             <img src={profileImage} alt='profile-icon' />
                             <h3>{currentUser?.name}<span className="role">{currentUser?.user_type}</span></h3>
                           </div>
                           <ul className="user-links">
-                            <li><Link id="altpass">
-                              <span className="fa fa-pencil"></span>Change Password</Link></li>
+                            <li><Link id="altpass" to={'/profile'}>
+                              <span className="fa fa-pencil"></span>Edit Profile</Link></li>
                             <li><Link id="logout" onClick={handleLogout}>
                               <span className="fa fa-sign-out"></span>Logout</Link></li>
                           </ul>
