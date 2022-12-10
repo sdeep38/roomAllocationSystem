@@ -1,17 +1,18 @@
 import './App.css';
 import { createBrowserRouter, RouterProvider, Route, Link, Outlet, } from "react-router-dom";
-import Home from './pages/Home';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Register from './pages/Register';
+import Home from './pages/Home';
 import Login from './pages/Login';
+import Profile from './pages/Profile';
 
 const BaseLayout = () => {
   return (
     <>
       <Navbar />
       <Outlet />
-      <Footer />
+      {/* <Footer /> */}
     </>
   )
 }
@@ -21,11 +22,9 @@ const router = createBrowserRouter([
     element: <BaseLayout />,
     children: [
 
-      //home url
-
       //about url
       {
-        path: "/about",   // /post/:id 
+        path: "/about",   
         element: <div>About</div>,
       },
 
@@ -34,9 +33,14 @@ const router = createBrowserRouter([
         path: "/register", 
         element: <Register />,
       },
-
       
     ]
+  },
+
+   //dashboard url
+   {
+    path: "/dashboard",
+    element: <Home />,
   },
 
   //login url
@@ -46,8 +50,8 @@ const router = createBrowserRouter([
   },
 
   {
-    path: "/dashboard",
-    element: <Home />,
+    path: "/profile", 
+    element: <Profile />,
   },
 
 ]);
