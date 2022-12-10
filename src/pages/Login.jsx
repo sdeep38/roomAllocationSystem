@@ -4,18 +4,19 @@ import { AuthContext } from '../context/authContext'
 import '../styles/Login.css'
 
 export default function Login() {
+
   const [inputs, setInputs] = useState({
     roll: "",
     password: "",
     user_type: "",
   })
 
+
+  const [err, setError] = useState(null)
+
   const navigate = useNavigate()
 
   const { login } = useContext(AuthContext)
-  //  console.log(currentUser)
-
-  const [err, setError] = useState(null)
 
   const handleChange = (e) => {
     setInputs(prev => ({ ...prev, [e.target.name]: e.target.value }))
@@ -52,7 +53,7 @@ export default function Login() {
                 <Link className="brand" to={'/'}>rk hall</Link>
               </div>
               <div className="userform">
-                <form className="row g-3" id="reg-form" action='#'>
+                <form className="row g-3" id="reg-form" action='#' method='post'>
                   <h3 className="h3 mb-2">User Login</h3>
 
                   
