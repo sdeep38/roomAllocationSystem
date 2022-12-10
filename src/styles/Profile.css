@@ -1,0 +1,114 @@
+.spacet50{
+    padding-top: 50px;
+}
+
+.profile{
+    background: #fff;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    padding: 1.5rem;
+    border-radius: 6px;
+}
+
+.profile-left{
+    border-top: 3px solid #2a2a2a;
+    border-radius: 2px 2px 6px 6px;
+}
+
+.profile-left .profile-img-top{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.profile-left img{
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    margin-bottom: 20px;
+}
+
+.profile-left .username{
+    font-size: 20px;
+    margin-bottom: 0;
+    text-transform: uppercase;
+}
+
+.profile-left .username span{
+    font-size: 14px;
+    color: #2a2a2a7d;
+}
+
+.profile-right .heading{
+    padding: 15px 20px;
+    font-size: 18px;
+    font-weight: 500;
+    border-bottom: 1px solid #ddd;
+}
+
+.profile-right .details{
+    padding: 20px 40px 30px 40px;
+}
+
+input[type="text"],
+input[type="email"]{
+    /* background: #eee !important; */
+    font-weight: 500;
+    border: 1px solid #f39837;
+    font-size: 14px;
+    width: 70%;
+    letter-spacing: .5px;
+}
+
+span.edit-btn{
+    position: absolute;
+    right: 20px;
+}
+
+span.edit-btn:hover{
+    cursor: pointer;
+}
+
+.form-input{
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    color: #212529;
+    border-radius: 0.25rem;
+}
+
+.form-label{
+    margin-bottom: 0.2rem;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.details button {
+    margin-top: 10px;
+}
+
+.details button:last-child{
+    float: right;
+
+}
+
+.user-data-wrap{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+.profile-left ul{
+    border-top: 1px solid #ddd;
+}
+
+.profile-left ul li{
+    list-style-type: none;
+    display: block;
+}
+
+.profile-left ul li a{
+    padding: 20px;
+}
