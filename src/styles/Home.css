@@ -1,6 +1,6 @@
 /* Dashboard Page */
 .navigation {
-    background: #fff;
+    background: #161b22;
     z-index: 5;
   }
   
@@ -9,7 +9,7 @@
   }
 
   .nav-ui a{
-    color: #2a2a2a !important;
+    color: #fff !important;
   }
   
   .top-right a img {
@@ -47,7 +47,7 @@
     height: 20px;
     width: 20px;
     transform: rotate(45deg);
-    background: #fff;
+    background: #161b22;
   }
   
   .sub-menu-wrap.show-menu {
@@ -66,21 +66,22 @@
   
   
   .sub-menu {
-    background: #fff;
+    background: #161b22;
     padding: 10px;
     border-radius: 4px;
+    border: 1px solid #30363d;
   }
   
   .user-info {
     display: flex;
     align-items: center;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #21262d;
     margin-bottom: 2px;
     padding-bottom: 10px;
   }
   
   .user-info h3 {
-    color: #2a2a2a;
+    color: #c9d1d9;
     font-size: 18px;
     text-transform: uppercase;
     letter-spacing: .5px;
@@ -90,7 +91,7 @@
   }
   
   span.role {
-    font-size: 14px;
+    font-size: 12px;
     color: #aaa;
     font-weight: 500;
     text-transform: capitalize;
@@ -121,8 +122,8 @@
   
   .user-links li a {
     text-decoration: none;
-    color: #2a2a2a;
-    transition: all .4s ease;
+    color: #c9d1d9 !important;
+    transition: all .4s;
   }
   
   .user-links li a span {
@@ -131,7 +132,7 @@
   }
   
   .user-links li a:hover {
-    color: #0f96ab !important;
+    font-weight: 500;
   }
   
   .nav-ui .navbar-brand {
@@ -303,6 +304,7 @@
     padding-right: 0;
     padding-left: 0;
     font-size: 14px;
+    background: none;
   }
   
   .block-right ul li a {

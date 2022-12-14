@@ -47,3 +47,66 @@
   outline: 0;
 }
 
+body{
+  background: #0d1117;
+}
+
+.w-70{
+  width: 70% !important;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    font-weight: 500;
+    background: #0d1117 !important;
+    border: 1px solid #30363d !important;
+    color: #c9d1d9;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border: 2px solid #58a6ff !important;
+    outline: 0px !important;
+}
+
+/* alert danger */
+.alert-danger{
+  border-color: rgba(248,81,73,0.4);
+  background-color: rgba(248, 82, 73, 0.148);
+  color: #c9d1d9;
+}
+
+.alert-danger span{
+  color: rgba(248, 82, 73, 0.921);
+  background: none;
+}
+
+.alert-danger span:hover{
+  color: rgba(248, 82, 73, 0.921);
+
+}
+
+/* alert success */
+.alert-success{
+  border-color: #42cc8ead;
+  background-color: #42cc8e3c;
+  color: #c9d1d9;
+}
+
+.alert .update-status{
+  font-size: 14px;
+  color: #42cc8ef1;
+  font-weight: 500;
+}
+
+.alert-success span{
+  color: #42cc8ead;
+  background: none;
+}
+
+.alert-success span:hover{
+  color: #42cc8ee0;
+
+}
