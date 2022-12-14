@@ -3,15 +3,11 @@
 }
 
 .profile{
-    background: #fff;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     padding: 1.5rem;
-    border-radius: 6px;
 }
 
 .profile-left{
-    border-top: 3px solid #2a2a2a;
-    border-radius: 2px 2px 6px 6px;
+    border-right: 1px solid #21262d;
 }
 
 .profile-left .profile-img-top{
@@ -27,24 +23,37 @@
     width: 150px;
     height: 150px;
     margin-bottom: 20px;
+    box-shadow: rgba(125, 125, 125, 0.603) 0px 5px 15px;
 }
 
 .profile-left .username{
     font-size: 20px;
     margin-bottom: 0;
     text-transform: uppercase;
+    margin-bottom: 4px;
+    color: #fff;
 }
 
-.profile-left .username span{
-    font-size: 14px;
-    color: #2a2a2a7d;
+.profile-left span.user-role{
+    font-size: 11px;
+    color: #e27d11;
+    background: #e27d1129;
+    padding: .05em .65em;
+    border-radius: 2em;
+    font-weight: 700;
+}
+
+.profile-right{
+    box-shadow: none;
+    /* border: 1px solid #ddd; */
 }
 
 .profile-right .heading{
     padding: 15px 20px;
     font-size: 18px;
     font-weight: 500;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #21262d;
+    color: #c9d1d9;
 }
 
 .profile-right .details{
@@ -53,17 +62,21 @@
 
 input[type="text"],
 input[type="email"]{
-    /* background: #eee !important; */
-    font-weight: 500;
+    background: #21262d;
     border: 1px solid #f39837;
     font-size: 14px;
-    width: 70%;
-    letter-spacing: .5px;
+}
+
+input[type="text"]:hover,
+input[type="email"]:hover{
+    border-color: #ebae6e;
 }
 
 span.edit-btn{
     position: absolute;
     right: 20px;
+    color: #58a6ff;
+    font-size: 14px;
 }
 
 span.edit-btn:hover{
@@ -82,14 +95,30 @@ span.edit-btn:hover{
     margin-bottom: 0.2rem;
     font-weight: 500;
     font-size: 14px;
+    color: #8b949e;
 }
 
 .details button {
     margin-top: 10px;
+    background: #238636;
+    border: #238636;
+    border-radius: 6px;
+    padding: 5px 16px;
+    font-weight: 500;
+    font-size: 14px;
 }
 
-.details button:last-child{
-    float: right;
+.details button:hover,
+.details button:focus{
+    
+    background: #2ea043;
+    outline: none !important;
+}
+
+
+
+.details{
+    text-align: center;
 
 }
 
@@ -100,12 +129,9 @@ span.edit-btn:hover{
     position: relative;
 }
 
-.profile-left ul{
-    border-top: 1px solid #ddd;
-}
-
 .profile-left ul li{
     list-style-type: none;
+    border: 1px solid #fff;
     display: block;
 }
 
