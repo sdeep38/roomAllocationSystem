@@ -31,12 +31,13 @@ export default function Login() {
     catch (err) {
       if (err.response.status === 500) {
         setError("Server failed to respond")
-        
-      }else{
+
+      } else {
         setError(err.response.data)
       }
     }
   }
+
 
 
   return (
@@ -44,26 +45,36 @@ export default function Login() {
     <div className="wrapper">
       <div className="container">
         <div className="row">
-          <div className="col-md-6 col-lg-4 col-sm-12 offset-md-4">
+          <div className="col-md-4 col-lg-4 col-sm-12 offset-md-4">
+            {err && <div className="alert alert-danger d-flex align-items-center" role="alert">
+              <div>
+                {err}
+              </div>
+            </div>}
+            
             <div className="form-section">
+
               <div className="form-top">
                 {/* <div className="logo">
                   <img src="https://1000logos.net/wp-content/themes/redwaves-lite/pic/mercedes-logo-sm.png" alt="Logo">
                 </div> */}
-                <Link className="brand" to={'/'}>rk hall</Link>
+                <a href='/' className="brand">rk hall</a>
               </div>
+
               <div className="userform">
                 <form className="row g-3" id="reg-form" action='#' method='post'>
-                  <h3 className="h3 mb-2">User Login</h3>
+                  {/* <h3 className="h3 mb-2">User Login</h3> */}
 
-                  
+
 
                   <div className="col-12">
-                    <input type="text" className="form-control" id="inputScode" name='roll' placeholder="Roll No" onChange={handleChange} />
+                    <label htmlFor="inputRoll" className="form-label">Username</label>
+                    <input type="text" className="form-input" id="inputRoll" name='roll' onChange={handleChange} autoCapitalize='off' autoCorrect='off' autoComplete='username'/>
                   </div>
                   <div className="col-12">
-                    <input type="password" className="form-control" id="inputLname" name='password' placeholder="Password" aria-describedby="keyHelp" onChange={handleChange} />
-                    
+                    <label htmlFor="inputPassword" className="form-label">Password</label>
+                    <input type="password" className="form-input" id="inputPassword" name='password' aria-describedby="keyHelp" onChange={handleChange} />
+
                   </div>
 
                   <div className="col-12">
@@ -83,9 +94,9 @@ export default function Login() {
                   </div>
 
                   <div id="keyHelp" className="form-text"><Link className="fpass" to={'/'}>
-                      <span className="fa fa-key"></span> Forgot Password</Link></div>
+                    <span className="fa fa-key"></span> Forgot Password</Link></div>
                 </form>
-                {err && <p style={{ color: "red", marginTop: 10 + 'px' }}>{err}</p>}
+                
               </div>
             </div>
           </div>
