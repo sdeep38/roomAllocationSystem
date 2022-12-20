@@ -10,7 +10,7 @@ export default function Header({currentUser}) {
                     <div className="row">
                         <div className="col-lg-12">
                             <div className="ui-text">
-                                <h1>Welcome <span style={{ textTransform: "uppercase" }}>{currentUser?.name}</span></h1>
+                                <h1>Welcome <span style={{ textTransform: "uppercase" }}>{currentUser?.resultSet.name}</span></h1>
                             </div>
                         </div>
                     </div>

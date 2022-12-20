@@ -6,6 +6,7 @@ import Register from './pages/Register';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Profile from './pages/Profile';
+import AllocateRooms from './pages/AllocateRooms';
 
 const BaseLayout = () => {
   return (
@@ -28,11 +29,7 @@ const router = createBrowserRouter([
         element: <div>About</div>,
       },
 
-      //register url
-      {
-        path: "/register", 
-        element: <Register />,
-      },
+      
       
     ]
   },
@@ -52,6 +49,22 @@ const router = createBrowserRouter([
   {
     path: "/profile", 
     element: <Profile />,
+  },
+
+  {
+    path: "/allocateRooms",
+    element: <AllocateRooms />
+  },
+
+  {
+    path: "/fpass",
+    element: <AllocateRooms />
+  },
+
+  //register url
+  {
+    path: "/register", 
+    element: <Register />,
   },
 
 ]);

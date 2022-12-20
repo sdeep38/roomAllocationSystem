@@ -41,10 +41,10 @@ export default function Navbar() {
                       <li className="nav-item">
                         <Link className="nav-link active" aria-current="page">Home</Link>
                       </li>
-                      <li className="nav-item">
-                        <Link className="nav-link">Link</Link>
-                      </li>
                       
+                      {currentUser?.auth == 'admin' && <li className="nav-item">
+                        <Link className="nav-link" to={'/allocateRooms'}>Allocate Rooms</Link>
+                      </li>}
                       
 
                     </ul>
@@ -54,14 +54,14 @@ export default function Navbar() {
                                         <button className = "btn btn-outline-success" type="submit">Search</button>
                                     </form> */}
                     <div className="top-right">
-                      <Link id="user-logged" title={ currentUser?.name }>
+                      <Link id="user-logged" title={ currentUser?.resultSet.name }>
                         <img src={profileIcon} alt='Profile' width="40" height="36" onClick={() =>{setMenuState(!menuState)}}/>
                       </Link>
                       <div className={`sub-menu-wrap ${menuState? 'show-menu' : 'hide-menu'}`} id="userMenu">
                         <div className="sub-menu">
                           <div className="user-info">
                             <img src={profileImage} alt='profile-icon' />
-                            <h3>{currentUser?.name}<span className="role">{currentUser?.user_type}</span></h3>
+                            <h3>{currentUser?.resultSet.name}<span className="role mt-1">{currentUser?.auth}</span></h3>
                           </div>
                           <ul className="user-links">
                             <li><Link id="altpass" to={'/profile'}>
