@@ -6,7 +6,7 @@ import '../styles/Login.css'
 export default function Login() {
 
   const [inputs, setInputs] = useState({
-    roll: "",
+    username: "",
     password: "",
     user_type: "",
   })
@@ -46,10 +46,11 @@ export default function Login() {
       <div className="container">
         <div className="row">
           <div className="col-md-4 col-lg-4 col-sm-12 offset-md-4">
-            {err && <div className="alert alert-danger d-flex align-items-center" role="alert">
+            {err && <div className="alert alert-danger d-flex align-items-center alert-dismissible fade show" role="alert">
               <div>
                 {err}
               </div>
+              <span className="fa fa-xmark btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></span>
             </div>}
             
             <div className="form-section">
@@ -68,8 +69,8 @@ export default function Login() {
 
 
                   <div className="col-12">
-                    <label htmlFor="inputRoll" className="form-label">Username</label>
-                    <input type="text" className="form-input" id="inputRoll" name='roll' onChange={handleChange} autoCapitalize='off' autoCorrect='off' autoComplete='username'/>
+                    <label htmlFor="inputUsername" className="form-label">Email address</label>
+                    <input type="email" className="form-input" id="inputUsername" name='username' onChange={handleChange} autoCapitalize='off' autoCorrect='off' autoComplete='off'/>
                   </div>
                   <div className="col-12">
                     <label htmlFor="inputPassword" className="form-label">Password</label>
