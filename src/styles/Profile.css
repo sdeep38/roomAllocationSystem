@@ -41,6 +41,7 @@
     padding: .05em .65em;
     border-radius: 2em;
     font-weight: 700;
+    text-transform: capitalize;
 }
 
 .profile-right{
