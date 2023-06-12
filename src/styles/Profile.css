@@ -6,10 +6,6 @@
     padding: 1.5rem;
 }
 
-.profile-left{
-    border-right: 1px solid #21262d;
-}
-
 .profile-left .profile-img-top{
     display: flex;
     align-items: center;
@@ -23,19 +19,20 @@
     width: 150px;
     height: 150px;
     margin-bottom: 20px;
-    box-shadow: rgba(125, 125, 125, 0.603) 0px 5px 15px;
+    box-shadow: rgba(142, 124, 124, 0.841) 0px 20px 100px 0px;
+    
 }
 
 .profile-left .username{
     font-size: 20px;
     margin-bottom: 0;
     text-transform: uppercase;
-    margin-bottom: 4px;
+    margin-bottom: 10px;
     color: #fff;
 }
 
 .profile-left span.user-role{
-    font-size: 11px;
+    font-size: 12px;
     color: #e27d11;
     background: #e27d1129;
     padding: .05em .65em;
@@ -52,25 +49,32 @@
 .profile-right .heading{
     padding: 15px 20px;
     font-size: 18px;
-    font-weight: 500;
-    border-bottom: 1px solid #21262d;
+    border-bottom: 1px solid #67768b;
     color: #c9d1d9;
 }
 
-.profile-right .details{
-    padding: 20px 40px 30px 40px;
+.user-data-wrap {
+    margin-bottom: 1rem;
 }
 
-input[type="text"],
-input[type="email"]{
-    background: #21262d;
-    border: 1px solid #f39837;
-    font-size: 14px;
+
+.profile-input{
+    background: none !important;
+    border: none;
+    font-size: 16px;
+    color: #c9d1d9 !important;
+    font-weight: 500;
+    border-bottom: 1px solid #67768b50;
+    border-radius: 0;
+    padding-left: 0;
 }
 
-input[type="text"]:hover,
-input[type="email"]:hover{
-    border-color: #ebae6e;
+.profile-input#inputName {
+    text-transform: capitalize;
+}
+
+form#PasswordChangeForm .profile-input:focus {
+    color: #c9d1d9;
 }
 
 span.edit-btn{
@@ -78,18 +82,24 @@ span.edit-btn{
     right: 20px;
     color: #58a6ff;
     font-size: 14px;
+    top: 38px;
 }
 
 span.edit-btn:hover{
     cursor: pointer;
+    color: #7ab6f3;
 }
 
 .form-input{
     display: block;
     width: 100%;
-    padding: 0.375rem 0.75rem;
+    padding: 0.575rem 0.25rem;
     color: #212529;
-    border-radius: 0.25rem;
+    /* border-radius: 0.25rem; */
+}
+
+.profile-right form{
+    padding: 0px 20px 30px 20px;
 }
 
 .form-label{
@@ -99,7 +109,8 @@ span.edit-btn:hover{
     color: #8b949e;
 }
 
-.details button {
+#PasswordChangeForm button,
+.profile-form button {
     margin-top: 10px;
     background: #238636;
     border: #238636;
@@ -109,24 +120,16 @@ span.edit-btn:hover{
     font-size: 14px;
 }
 
-.details button:hover,
-.details button:focus{
-    
-    background: #2ea043;
+.profile-form button:hover,
+.profile-form button:focus,
+#PasswordChangeForm button:hover,
+#PasswordChangeForm button:focus
+{
+    background: #2faf48;
     outline: none !important;
 }
 
-
-
-.details{
-    text-align: center;
-
-}
-
-.user-data-wrap{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.relative{
     position: relative;
 }
 
@@ -138,4 +141,38 @@ span.edit-btn:hover{
 
 .profile-left ul li a{
     padding: 20px;
+}
+
+.center{
+    text-align: center;
+    justify-content: center;
+}
+
+.group-buttons a.setting-tabs{
+    display: block;
+    padding: 10px 40px;
+    margin-bottom: 10px;
+    /* text-align: center; */
+}
+
+a.setting-tabs{
+    text-decoration: none;
+    color: #c9d1d9 !important;
+    font-size: 16px;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+a.setting-tabs:hover{
+    color: #c9d1d9;
+}
+
+.setting-tabs.active{
+    background-color: #4b9def2b;
+    color: #4a9ff4 !important;
+    font-weight: 700;
+    letter-spacing: 2px;
+    font-size: 18px;
+    border: none;
+
 }
