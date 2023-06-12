@@ -20,31 +20,28 @@ export default function Register() {
     setInputs(prev => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+  const handleSubmit = async () => {
     try {
       const res = await axios.post("/auth/register", inputs)
-      console.log(res)
+      console.log(res.data.message)
     }
     catch (err) {
       setError(err.response.data)
     }
   }
 
-  const positionOptions = [
-    {
-      label: "General Secretary",
-      value: "gSec",
-    },
-    {
-      label: "Hall President",
-      value: "hallPresident",
-    },
-    {
-      label: "Warden",
-      value: "Warden",
-    },
-  ]
+  const validateForm = async (e) => {
+    e.preventDefault()
+
+    //valid user type
+    if (!inputs) {
+      setError("All fields are mandatory")
+    }
+    else{
+      console.log(inputs)
+      handleSubmit()
+    }
+  }
 
   return (
 
@@ -53,9 +50,9 @@ export default function Register() {
         <div className="row">
           <div className="col-md-4 col-lg-4 col-sm-12 offset-md-4">
 
-            {Error && <div className="alert alert-danger d-flex align-items-center alert-dismissible fade show" role="alert">
+            {Error && <div className={"alert " + (Error.status === 'error' ? 'alert-danger' : 'alert-success') + " d-flex align-items-center alert-dismissible fade show"} role="alert">
               <div>
-                {Error}
+                {Error.message}
               </div>
               <span className="fa fa-xmark btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></span>
             </div>}
@@ -74,53 +71,33 @@ export default function Register() {
 
                   <div className="col-12">
                     <label htmlFor="inputName" className="form-label">Name</label>
-                    <input type="text" className="form-input" id='inputName' name='name' onChange={handleChange} />
+                    <input type="text" className="form-control login-box-input" id='inputName' name='name' onChange={handleChange} />
 
                   </div>
 
                   <div className="col-12">
                     <label htmlFor="inputUsername" className="form-label">Email address</label>
-                    <input type="email" className="form-input" id="inputUsername" name='email' onChange={handleChange} />
+                    <input type="email" className="form-control login-box-input" id="inputUsername" name='email' onChange={handleChange} />
                   </div>
                   <div className="col-12">
                     <label htmlFor="inputPassword" className="form-label">Password</label>
-                    <input type="password" className="form-input" id="inputPassword" name='password' aria-describedby="keyHelp" onChange={handleChange} />
+                    <input type="password" className="form-control login-box-input" id="inputPassword" name='password' aria-describedby="keyHelp" onChange={handleChange} />
 
                   </div>
                   <div className="col-lg-4">
                     <label htmlFor="inputRoll" className="form-label">Roll No.</label>
-                    <input type="text" className="form-input" id="inputRoll" name='roll' onChange={handleChange} />
+                    <input type="text" className="form-control login-box-input" id="inputRoll" name='roll' onChange={handleChange} />
                   </div>
-                  {/* <div className="col-lg-4">
-                    <label htmlFor="inputPosition" className="form-label">Position</label>
-                    <select className="form-select" name='position' id="inputPosition" onChange={handleChange}>
-                      <option>Select Position</option>
-                      {positionOptions.map((option, index) => {
-                        return <option key={index} value={option.value}>{option.label}</option>
-                      })}
-                    </select>
-                  </div> */}
+                  
 
                   <div className="col-lg-8">
                     <label htmlFor="inputContact" className="form-label">Contact</label>
-                    <input type="text" className="form-input" id='inputContact' name='phone' onChange={handleChange} />
+                    <input type="text" className="form-control login-box-input" id='inputContact' name='phone' onChange={handleChange} />
                   </div>
-
-
-                  {/* <div className="col-12">
-                    <div className="form-check form-check-inline">
-                      <input className="form-check-input" type="radio" name="user_type" id="inlineRadio1" value="admin" onChange={handleChange} />
-                      <label className="form-check-label" htmlFor="inlineRadio1">Admin</label>
-                    </div>
-                    <div className="form-check form-check-inline">
-                      <input className="form-check-input" type="radio" name="user_type" id="inlineRadio2" value="student" onChange={handleChange} />
-                      <label className="form-check-label" htmlFor="inlineRadio2">Student</label>
-                    </div>
-                  </div> */}
 
                   <div className="col-12">
                     {/* <a href="#" className="reg-btn">New User</a> */}
-                    <button type="submit" id="login-btn" className="btn" onClick={handleSubmit}>Register</button>
+                    <button type="submit" id="login-btn" className="btn" onClick={validateForm}>Register</button>
                   </div>
 
                   <div id="keyHelp" className="form-text"><Link className="fpass to-login" to={'/login'}>
