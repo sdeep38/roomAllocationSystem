@@ -2,13 +2,61 @@ import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import Header from '../components/Header'
-import ScrollMenu from '../components/ScrollMenu'
+import Modal from '../components/Modal'
+import SelectDropdown from '../components/SelectDropdown'
 import { AuthContext } from '../context/authContext'
 import '../styles/Home.css'
+import Navbar from '../components/Navbar'
 
 export default function Home() {
 
+    const [modalState, setModalState] = useState(false)
+
+    //get single student data
+    const [userData, setUserData] = useState([])
+
+    //get all students data
+    const [students, setStudents] = useState(null)
+
     const { currentUser } = useContext(AuthContext)
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await axios.get('/users/getUsers/notBlank')
+                setStudents(res.data)
+            } catch (err) {
+                console.log(err)
+            }
+        }
+        if (!students) {
+            fetchData();
+        }
+    }, [])
+
+    const fetchUser = async (userId) => {
+        try {
+            const res = await axios.get(`/users/getUser/${userId}`)
+            setUserData(res.data)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    const handleFilterData = (e) => {
+        console.log("Api calling for value = ", e.target.value)
+    }
+
+    const userRoleOptions = [
+        {
+            label: "Student",
+            value: "student",
+        },
+        {
+            label: "Admin",
+            value: "admin",
+        }
+    ]
 
     const blockOptions = [
         {
@@ -52,113 +100,548 @@ export default function Home() {
         },
     ]
 
-    //get all students data
-    const [students, setStudents] = useState([])
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const res = await axios.get('/users/getUsers')
-                setStudents(res.data)
-            } catch (err) {
-                console.log(err)
-            }
-        }
-        fetchData();
-    }, [])
-
-    //get single student data
-    const [userData, setUserData] = useState([])
-
-    const fetchUser = async (userId) => {
-        try {
-            const res = await axios.get(`/users/getUser/${userId}`)
-            setUserData(res.data)
-        } catch (err) {
-            console.log(err)
-        }
-    }
-
     return (
         <>
+            <Header title='Dashboard' />
 
-            <Header currentUser = {currentUser}/>
-            <ScrollMenu />
-
+            {/* <ScrollMenu /> */}
             <div className="main-content">
                 <div className="container pt-5">
                     <div className="row">
-                        <div className="col-lg-8 col-md-8 col-sm-12">
+                        <div className="col-sm-12">
                             <div className="room-view-wrapper">
-                                <h2>Room Details</h2>
-                                <div className="filter-form">
-                                    <form className="row row-cols-lg-auto g-3 align-items-center">
-                                        <div className="col-lg-4">
-                                            <label className="visually-hidden" htmlFor="inlineFormSelectPref">Preference</label>
-                                            <select className="form-select" id="inlineFormSelectPref">
-                                                <option>Select Floor</option>
-                                                {floorOptions.map((option, index) => {
-                                                    return <option key={index} value={option.value}>{option.label}</option>
-                                                })}
-                                            </select>
-                                        </div>
+                                <h2 className='heading'>Room Details</h2>
+                                <div className="room-view-section template-view mb-5">
+                                    <div className="filter-data d-flex align-items-center justify-content-between mb-1">
+                                        <h4 className='heading'>Click on a room to get details</h4>
+                                        <ul className="showcase">
+                                            <li>
+                                                <div className="room"></div>
+                                                <small>N/A</small>
+                                            </li>
+                                            <li>
+                                                <div className="room special"></div>
+                                                <small>Special</small>
+                                            </li>
+                                            <li>
+                                                <div className="room occupied"></div>
+                                                <small>Occupied</small>
+                                            </li>
+                                            
+                                        </ul>
+                                        
+                                        {currentUser?.authorizedAs == 'admin' && <a href='/allocateRooms' type="button" className="btn btn-outline-success mb-3"><i className='fa fa-plus'></i> New Allocation</a>}
 
-                                        <div className="col-lg-4">
-                                            <label className="visually-hidden" htmlFor="inlineFormSelectPref">Preference</label>
-                                            <select className="form-select" id="inlineFormSelectPref">
-                                                <option>Select Block</option>
-                                                {blockOptions.map((option, index) => {
-                                                    return <option key={index} value={option.value}>{option.label}</option>
-                                                })}
-                                            </select>
-                                        </div>
+                                    </div>
+                                    
+                                    {/* <button type="button" className="btn btn-outline-success mb-3">New Allocation</button> */}
 
-                                        <div className="col-lg-4">
-                                            <button type="submit" className="btn btn-primary">Filter</button>
+                                    <div className="room-view-grids">
+                                        {/* <ul className="nav nav-tabs" id="myTab" role="tablist">
+                                            <li className="nav-item" role="presentation">
+                                                <button className="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">East Wing</button>
+                                            </li>
+                                            <li className="nav-item" role="presentation">
+                                                <button className="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Middle Wing</button>
+                                            </li>
+                                            <li className="nav-item" role="presentation">
+                                                <button className="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">West Wing</button>
+                                            </li>
+
+                                        </ul> */}
+                                        <div className="tab-content" id="myTabContent">
+                                            <div className="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabIndex="0">
+                                                <div className="room-grid">
+                                                    <div className="container">
+                                                        <h3 className="block-id">E-BLOCK</h3>
+                                                        <div className="floor floor-0">
+                                                            <div className="row justify-content-center">
+                                                                <div className='room' onClick={() => setModalState(true)}><span className="room-no">417</span></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div className="floor floor-1">
+                                                            <div className="row justify-content-center">
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div className="floor floor-2">
+                                                            <div className="row justify-content-center">
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                            </div>
+                                                        </div>
+                                                        <div className="floor floor-3">
+                                                            <div className="row justify-content-center">
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room occupied'><span className="room-no">106</span></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room special'><span className="room-no">119</span></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                            </div>
+                                                        </div>
+                                                        <h3 className="block-id">D-BLOCK</h3>
+                                                        <div className="floor floor-0">
+                                                            <div className="row justify-content-center">
+                                                                <div className='room'><span className="room-no">417</span></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div className="floor floor-1">
+                                                            <div className="row justify-content-center">
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div className="floor floor-2">
+                                                            <div className="row justify-content-center">
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                            </div>
+                                                        </div>
+                                                        <h3 className="block-id">C-BLOCK</h3>
+                                                        <div className="floor floor-0">
+                                                            <div className="row justify-content-center">
+                                                                <div className='room'><span className="room-no">417</span></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div className="floor floor-1">
+                                                            <div className="row justify-content-center">
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div className="floor floor-2">
+                                                            <div className="row justify-content-center">
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                            </div>
+                                                        </div>
+                                                        <h3 className="block-id">B-BLOCK</h3>
+                                                        <div className="floor floor-0">
+                                                            <div className="row justify-content-center">
+                                                                <div className='room'><span className="room-no">417</span></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div className="floor floor-1">
+                                                            <div className="row justify-content-center">
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div className="floor floor-2">
+                                                            <div className="row justify-content-center">
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                            </div>
+                                                        </div>
+                                                        <h3 className="block-id">A-BLOCK</h3>
+                                                        <div className="floor floor-0">
+                                                            <div className="row justify-content-center">
+                                                                <div className='room'><span className="room-no">417</span></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div className="floor floor-1">
+                                                            <div className="row justify-content-center">
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                            </div>
+
+                                                        </div>
+                                                        <div className="floor floor-2">
+                                                            <div className="row justify-content-center">
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                                <div className='room'></div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div className="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabIndex="0">
+                                                <h1>This is Profile</h1>
+                                            </div>
+                                            <div className="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabIndex="0">
+                                                <h1>This is Contact</h1>
+                                            </div>
                                         </div>
-                                    </form>
+                                    </div>
+
+                                    <div className='footer-text'><button type="button" className="btn btn-outline-info">Generate PDF report</button></div>
+
                                 </div>
-                                <div className="room-view_table">
-                                    <table className="table">
-                                        <thead className="table-light">
-                                            <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">Room Number</th>
-                                                <th scope="col">Student Name</th>
-                                                <th scope="col">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
 
-                                            {students.map((student, index) => {
-                                                return <tr key={index}>
-                                                    <th scope="row">{student.id}</th>
-                                                    <td>{student.block} - {student.room}</td>
-                                                    <td>{student.name}</td>
-                                                    <td><Link onClick={() => {fetchUser(student.id)}}>View</Link></td>
-                                                </tr>
-                                            })}
-
-                                        </tbody>
-                                    </table>
-                                </div>
                             </div>
                         </div>
-                        <div className="col-lg-4 col-md-4 col-sm-12">
-                            <div className="block-right">
-                                <h4>Student Details</h4>
-                                <ul className="list-group list-group-flush">
-                                    <li className="list-group-item">Name<Link style={{ float: "right" }}>{userData[0]?.name}</Link></li>
-                                    <li className="list-group-item">Roll No<Link style={{ float: "right" }}>{userData[0]?.roll}</Link></li>
-                                    <li className="list-group-item">Email id<Link style={{ float: "right" }}>{userData[0]?.email}</Link></li>
-                                    <li className="list-group-item">Contact No<Link style={{ float: "right" }}>{userData[0]?.phone}</Link></li>
-                                    <li className="list-group-item">Room No<Link style={{ float: "right" }}>{userData[0]?.block} - {userData[0]?.room}</Link></li>
-                                </ul>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </div>
+            <Modal showModal={modalState} onHide={() => setModalState(false)}></Modal>
         </>
     )
 }
