@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import Header from '../components/Header'
+import SelectDropdown from '../components/SelectDropdown'
 import { AuthContext } from '../context/authContext'
 
 export default function AllocateRooms() {
@@ -58,6 +59,7 @@ export default function AllocateRooms() {
 
     const handlePreview = async (e) => {
         e.preventDefault()
+
         if (allocStudent != null && allocRoom != null) {
             try {
                 const res = await axios.get(`/users/getUser/${allocStudent}`)
@@ -75,13 +77,14 @@ export default function AllocateRooms() {
     
             setPreview(true)
         }
+        else alert('No changes detected')
         
     }
 
     return (
         <>
 
-            <Header currentUser={currentUser} />
+            <Header title={'Room Allocation'} />
             {/* <ScrollMenu /> */}
 
             <div className="main-content">
@@ -93,15 +96,17 @@ export default function AllocateRooms() {
                                 
                                 <div className="allocate-section template-view mb-5">
                                     <p className="recommended"><span className="label">RECOMMENDED</span>Preview your changes before saving them</p>
+                                    
                                     {resStatus && <div className="alert alert-success d-flex align-items-center mb-3 alert-dismissible fade show" role="alert">
                                     <div className='update-status'>
                                         {resStatus}
+
                                     </div>
                                     <span className="fa fa-xmark btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></span>
                                 </div>}
-                                    <form className="row row-cols-lg-auto g-3 align-items-center">
+                                    <form className="row row-cols-lg-auto g-3 align-items-center" id='room-allocation-form'>
                                         <div className="col-lg-4">
-                                            <label className="form-label" htmlFor="inlineFormSelectPref">Select Student</label>
+                                            {/* <label className="form-label" htmlFor="inlineFormSelectPref">Select Student</label> */}
                                             <select className="form-select" id="inlineFormSelectPref" onChange={(e) => setAllocStudent(e.target.value)}>
                                                 <option>Select Student</option>
                                                 {students.map((student, index) => {
@@ -109,10 +114,10 @@ export default function AllocateRooms() {
                                                 })}
                                             </select>
                                         </div>
-
+                                        
                                         <div className="col-lg-4">
-                                            <label className="form-label" htmlFor="inlineFormSelectPref">Select Room</label>
-                                            <select className="form-select" id="inlineFormSelectPref" onChange={(e) => { setAllocRoom(e.target.value); console.log(e.target.value) }}>
+                                            {/* <label className="form-label" htmlFor="inlineFormSelectPref">Select Room</label> */}
+                                            <select className="form-select" id="inlineFormSelectPref" onChange={(e) => { setAllocRoom(e.target.value); }}>
                                                 <option>Select Room</option>
                                                 {rooms.map((room, index) => {
                                                     return <option key={index} value={room.id}>{room.block + '-' + room.roomno}</option>
@@ -131,7 +136,7 @@ export default function AllocateRooms() {
                                     <button className="btn btn-primary" onClick={handlePreview}>Preview</button>
                                 </div> */}
 
-                                    <div className={`allocation-preview${preview ? ' show' : ''}`}>
+                                    <div className={'allocation-preview' + (preview ? ' show' : '')}>
                                         <h6>Room Allocation Preview</h6>
 
                                         <div className="row">
