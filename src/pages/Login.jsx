@@ -1,7 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import FormError from '../components/FormError'
+import SelectDropdown from '../components/SelectDropdown'
 import { AuthContext } from '../context/authContext'
 import '../styles/Login.css'
+
 
 export default function Login() {
 
@@ -11,6 +14,7 @@ export default function Login() {
     user_type: "",
   })
 
+  const { currentUser } = useContext(AuthContext)
 
   const [err, setError] = useState(null)
 
@@ -22,21 +26,39 @@ export default function Login() {
     setInputs(prev => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
+  const handleSubmit = async () => {
     try {
       await login(inputs)
-      navigate('/dashboard')
+      if(currentUser.isuserloggedin) navigate('/dashboard')
     }
     catch (err) {
-      if (err.response.status === 500) {
-        setError("Server failed to respond")
-
-      } else {
-        setError(err.response.data)
-      }
+      setError(err.response.data)
     }
   }
+
+  const validateForm = (e) => {
+    e.preventDefault()
+
+    //valid user type
+    if (!inputs.user_type) {
+      setError("Required Field 'Login As' ")
+    }
+    else{
+      console.log(inputs);
+      handleSubmit()
+    }
+  }
+
+  const userRoleOptions = [
+    {
+      label: "Student",
+      value: "student",
+    },
+    {
+      label: "Admin",
+      value: "admin",
+    }
+  ]
 
 
 
@@ -46,13 +68,8 @@ export default function Login() {
       <div className="container">
         <div className="row">
           <div className="col-md-4 col-lg-4 col-sm-12 offset-md-4">
-            {err && <div className="alert alert-danger d-flex align-items-center alert-dismissible fade show" role="alert">
-              <div>
-                {err}
-              </div>
-              <span className="fa fa-xmark btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></span>
-            </div>}
-            
+            {err && <FormError value={err.message} status='danger' />}
+
             <div className="form-section">
 
               <div className="form-top">
@@ -65,20 +82,17 @@ export default function Login() {
               <div className="userform">
                 <form className="row g-3" id="reg-form" action='#' method='post'>
                   {/* <h3 className="h3 mb-2">User Login</h3> */}
-
-
-
                   <div className="col-12">
                     <label htmlFor="inputUsername" className="form-label">Email address</label>
-                    <input type="email" className="form-input" id="inputUsername" name='username' onChange={handleChange} autoCapitalize='off' autoCorrect='off' autoComplete='off'/>
+                    <input type="email" className="form-control login-box-input" id="inputUsername" name='username' onChange={handleChange} autoCapitalize='off' autoCorrect='off' autoComplete='off' autoFocus/>
                   </div>
                   <div className="col-12">
                     <label htmlFor="inputPassword" className="form-label">Password</label>
-                    <input type="password" className="form-input" id="inputPassword" name='password' aria-describedby="keyHelp" onChange={handleChange} />
+                    <input type="password" className="form-control login-box-input" id="inputPassword" name='password' aria-describedby="keyHelp" onChange={handleChange} />
 
                   </div>
 
-                  <div className="col-12">
+                  {/* <div className="col-12">
                     <div className="form-check form-check-inline">
                       <input className="form-check-input" type="radio" name="user_type" id="inlineRadio1" value="admin" onChange={handleChange} />
                       <label className="form-check-label" htmlFor="inlineRadio1">Admin</label>
@@ -87,17 +101,23 @@ export default function Login() {
                       <input className="form-check-input" type="radio" name="user_type" id="inlineRadio2" value="student" onChange={handleChange} />
                       <label className="form-check-label" htmlFor="inlineRadio2">Student</label>
                     </div>
-                  </div>
+                  </div> */}
 
-                  <div className="col-12">
+
+
+                  <div className="col-lg-4">
+                  <SelectDropdown placeHolder="Login As" name = 'user_type' Options={userRoleOptions} isMulti={false} isSearchable={false} onChange = {(value) => setInputs(prev => ({...prev, user_type : value }))}/>
+
+                  </div>
+                  <div className="col-lg-8">
                     {/* <a href="#" className="reg-btn">New User</a> */}
-                    <button type="submit" id="login-btn" className="btn" onClick={handleSubmit}>Login</button>
+                    <button type="submit" id="login-btn" className="btn" onClick={validateForm}>Login</button>
                   </div>
 
-                  <div id="keyHelp" className="form-text"><Link className="fpass" to={'/'}>
+                  <div id="keyHelp" className="form-text"><Link className="fpass" to={'/fpass'}>
                     <span className="fa fa-key"></span> Forgot Password</Link></div>
                 </form>
-                
+
               </div>
             </div>
           </div>
