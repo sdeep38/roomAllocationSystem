@@ -105,3 +105,9 @@ form .form-check-input{
     margin-bottom: 8px;
     font-weight: 400;
 }
+
+.userform .password-reset-link a {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #fff;
+}
