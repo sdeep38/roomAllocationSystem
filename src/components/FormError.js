@@ -6,7 +6,7 @@ export default function FormError(props) {
             <div>
                 {props.value}
             </div>
-            {/* <span className="fa fa-xmark btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></span> */}
+            {props.dismissable && <span className="fa fa-xmark btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></span>}
         </div>
     )
 }
