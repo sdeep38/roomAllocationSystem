@@ -10,36 +10,36 @@ export default function AllocateRooms() {
 
     const { currentUser } = useContext(AuthContext)
 
-    const [allocRoom, setAllocRoom] = useState(null)
-    const [allocStudent, setAllocStudent] = useState(null)
+    //filtered allocation data
+    const [allocStudentData, setAllocStudentData] = useState(null)
+    const [allocRoomData, setAllocRoomData] = useState(null)
 
-    const [allocStudentData, setAllocStudentData] = useState({})
-    const [allocRoomData, setAllocRoomData] = useState({})
-
-    //get all data
+    //fetch all data from server
     const [students, setStudents] = useState([])
     const [rooms, setRooms] = useState([])
 
+    //handle preview state
     const [preview, setPreview] = useState(false)
 
+    //successful allocation status
     const [resStatus, setResStatus] = useState(null)
 
     useEffect(() => {
         const fetchstudentData = async () => {
             try {
                 const res = await axios.get('/users/getUsers/blank')
-                setStudents(res.data)
+                setStudents(res.data.message)
             } catch (err) {
-                console.log(err)
+                console.log(err.response.data.message)
             }
         }
 
         const fetchroomData = async () => {
             try {
                 const res = await axios.get('/rooms/getRooms/0')
-                setRooms(res.data)
+                setRooms(res.data.message)
             } catch (err) {
-                console.log(err)
+                console.log(err.response.data.message)
             }
         }
 
@@ -48,37 +48,19 @@ export default function AllocateRooms() {
     }, [])
 
     const handleSubmit = async (e) => {
-        e.preventDefault()
+        e.preventDefault();
         try {
-            const res = await axios.put(`/users/updateUser/${allocStudent}`, { newRoom: allocRoomData })
-            setResStatus(res.data)
+            const res = await axios.put('/rooms/updateRoom/', { field: 'room', studentData: allocStudentData?.roll, roomData: allocRoomData })
+            console.log(res.data)
+            setResStatus(res.data.message)
         } catch (error) {
             console.log(error.response.data)
         }
     }
 
-    const handlePreview = async (e) => {
-        e.preventDefault()
-
-        if (allocStudent != null && allocRoom != null) {
-            try {
-                const res = await axios.get(`/users/getUser/${allocStudent}`)
-                setAllocStudentData(res.data[0])
-            } catch (err) {
-                console.log('studentError : ', err)
-            }
-    
-            try {
-                const res = await axios.get(`/rooms/getRoom/${allocRoom}`)
-                setAllocRoomData(res.data[0])
-            } catch (err) {
-                console.log('roomError', err)
-            }
-    
-            setPreview(true)
-        }
-        else alert('No changes detected')
-        
+    const handlePreview = (e) => {
+        e.preventDefault();
+        (allocStudentData && allocRoomData) ? setPreview(true) : alert('No changes detected')
     }
 
     return (
@@ -106,21 +88,19 @@ export default function AllocateRooms() {
                                 </div>}
                                     <form className="row row-cols-lg-auto g-3 align-items-center" id='room-allocation-form'>
                                         <div className="col-lg-4">
-                                            {/* <label className="form-label" htmlFor="inlineFormSelectPref">Select Student</label> */}
-                                            <select className="form-select" id="inlineFormSelectPref" onChange={(e) => setAllocStudent(e.target.value)}>
+                                            <select className="form-select" id="inlineFormSelectPref" onChange={(e) => setAllocStudentData(students.filter((student) => student.roll === e.target.value)[0])}>
                                                 <option>Select Student</option>
                                                 {students.map((student, index) => {
-                                                    return <option key={index} value={student.id}>{student.roll}</option>
+                                                    return <option key={index}>{student.roll}</option>
                                                 })}
                                             </select>
                                         </div>
                                         
                                         <div className="col-lg-4">
-                                            {/* <label className="form-label" htmlFor="inlineFormSelectPref">Select Room</label> */}
-                                            <select className="form-select" id="inlineFormSelectPref" onChange={(e) => { setAllocRoom(e.target.value); }}>
+                                            <select className="form-select" id="inlineFormSelectPref" onChange={(e) => setAllocRoomData(e.target.value)}>
                                                 <option>Select Room</option>
                                                 {rooms.map((room, index) => {
-                                                    return <option key={index} value={room.id}>{room.block + '-' + room.roomno}</option>
+                                                    return <option key={index}>{room.block + '-' + room.roomno}</option>
                                                 })}
                                             </select>
                                         </div>
@@ -132,9 +112,6 @@ export default function AllocateRooms() {
                                         </div>
                                         
                                     </form>
-                                    {/* <div className="col-lg-4 mb-3">
-                                    <button className="btn btn-primary" onClick={handlePreview}>Preview</button>
-                                </div> */}
 
                                     <div className={'allocation-preview' + (preview ? ' show' : '')}>
                                         <h6>Room Allocation Preview</h6>
@@ -150,8 +127,8 @@ export default function AllocateRooms() {
                                             </div>
                                             <div className="col-lg-6">
                                                 <ul className="list-group list-group-flush bg0">
-                                                    <li className="list-group-item">Alloted Block<Link style={{ float: "right" }}>{allocRoomData?.block}</Link></li>
-                                                    <li className="list-group-item">Alloted Room No<Link style={{ float: "right" }}>{allocRoomData?.roomno}</Link></li>
+                                                    <li className="list-group-item">Alloted Block<Link style={{ float: "right" }}>{allocRoomData?.split('-')[0]}</Link></li>
+                                                    <li className="list-group-item">Alloted Room No<Link style={{ float: "right" }}>{allocRoomData?.split('-')[1]}</Link></li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -160,30 +137,6 @@ export default function AllocateRooms() {
                                     </div>
                                 </div>
 
-                                {/* <div className="room-view_table">
-                                    <table className="table">
-                                        <thead className="table-light">
-                                            <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">Room Number</th>
-                                                <th scope="col">Student Name</th>
-                                                <th scope="col">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-
-                                            {/* {students.map((student, index) => {
-                                                return <tr key={index}>
-                                                    <th scope="row">{student.id}</th>
-                                                    <td>{student.block} - {student.room}</td>
-                                                    <td>{student.name}</td>
-                                                    <td><Link onClick={() => {fetchUser(student.id)}}>View</Link></td>
-                                                </tr>
-                                            })} *
-
-                                        </tbody>
-                                    </table>
-                                </div> */}
                             </div>
                         </div>
 
