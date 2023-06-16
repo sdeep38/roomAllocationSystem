@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import '../styles/Profile.css'
-import profileImage from '../images/profile.jpg'
+import profileImage from '../images/blank-profile.png'
 import Header from '../components/Header'
 import { AuthContext } from '../context/authContext'
 import { Navigate, useNavigate } from 'react-router-dom'
