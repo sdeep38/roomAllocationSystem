@@ -15,7 +15,6 @@ export default function Login() {
   })
 
 
-  const [err, setError] = useState({ isErr: false, value: '', status: '' })
   const [resStatus, setResStatus] = useState(null)
 
   const navigate = useNavigate()
@@ -28,17 +27,11 @@ export default function Login() {
 
   const handleSubmit = async () => {
     try {
-      const res = await axios.post(`/auth/forgotPassword/`, inputs)
+      const res = await axios.post('/auth/forgotPassword/', inputs)
       setResStatus(res.data)
-      console.log(res.data)
     }
     catch (err) {
-      if (err.response.status === 500) {
-        setError("Server failed to respond")
-
-      } else {
-        setError({ isErr: true, value: err.response.data, status: 'danger' })
-      }
+      setResStatus(err.response.data)
     }
   }
 
@@ -47,13 +40,24 @@ export default function Login() {
 
     const isValidEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
-    if (inputs.username.match(isValidEmail)) {
+    if (inputs.username.match(isValidEmail) && inputs.user_type) {
       handleSubmit()
     }
     else {
-      setError({ isErr: true, value: "Invalid Email", status: 'danger' })
+      alert('Invalid credentials')
     }
   }
+
+  const userRoleOptions = [
+    {
+      label: "Student",
+      value: "student",
+    },
+    {
+      label: "Admin",
+      value: "admin",
+    }
+  ]
 
 
   return (
@@ -62,13 +66,13 @@ export default function Login() {
       <div className="container">
         <div className="row">
           <div className="col-md-4 col-lg-4 col-sm-12 offset-md-4">
-            {err.isErr && <FormError value={err.value} status={err.status} />}
+            {resStatus && <FormError value={resStatus?.message} status={resStatus?.status === 'success' ? 'success' : 'danger'} dismissable={false}/>}
 
             <div className="form-section">
 
               <div className="form-top">
 
-                <a href='/' className="brand">rk hall</a>
+                <Link href='/login' className="brand">rk hall</Link>
               </div>
 
               <div className="userform">
@@ -76,10 +80,14 @@ export default function Login() {
 
                   <div className="col-12">
                     <label htmlFor="inputUsername" className="form-label">Email address</label>
-                    <input type="email" className="form-control login-box-input" id="inputUsername" name='username' onChange={handleChange} autoCapitalize='off' autoCorrect='off' autoComplete='off' autoFocus disabled={resStatus}/>
+                    <input type="email" className="form-control login-box-input" id="inputUsername" name='username' onChange={handleChange} autoFocus disabled={resStatus?.status === 'success'}/>
                   </div>
-                  <div className="col-12">
-                    <button type="submit" id="login-btn" className="btn" onClick={validateForm} disabled={resStatus}>Submit</button>
+                  <div className="col-lg-4">
+                  <SelectDropdown placeHolder="Login As" name = 'user_type' Options={userRoleOptions} isMulti={false} isSearchable={false} onChange = {(value) => setInputs(prev => ({...prev, user_type : value }))}/>
+
+                  </div>
+                  <div className="col-lg-8">
+                    <button type="submit" id="login-btn" className="btn" onClick={validateForm} disabled={resStatus?.status === 'success'}>Submit</button>
                   </div>
 
                   <div id="keyHelp" className="form-text"><Link className="fpass" to={'/login'}>
@@ -88,11 +96,11 @@ export default function Login() {
 
                 
 
+              {resStatus?.status === 'success' &&
+                  <div className="password-reset-link mt-3 text-info text-center">Verification link : <Link to={resStatus?.link} target='_blank' rel='noopener noreferrer'>verify</Link></div>
+                }
 
               </div>
-              {resStatus &&
-                  <div className="password-reset-link mt-3 text-info">Click Here : <a href={resStatus.link} target='_blank'>{resStatus.link}</a></div>
-                }
             </div>
           </div>
         </div>
