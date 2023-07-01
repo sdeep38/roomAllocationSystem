@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono&display=swap');
+
 .App {
   text-align: center;
 }
@@ -48,7 +50,9 @@
 }
 
 body {
-  background: #0d1117;
+  background: url('./images/bg-dark.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .w-70 {
@@ -73,12 +77,13 @@ select {
   color: #c9d1d9 !important;
   font-weight: 500;
   font-size: 14px;
-  background: #0d1117 !important;
-  border-radius: 4px !important;
+  background: none !important;
+  border-radius: 0;
+  border-bottom: 1px solid #80818350;
 }
 
 .login-box-input:focus {
-  border: 2px solid #58a6ff !important;
+  border-bottom: 2px solid #58a6ff;
   outline: 0px !important;
 }
 
@@ -133,11 +138,11 @@ button:focus {
 /* select dropdown */
 .dropdown-Container {
   text-align: left;
-  border: 1px solid #30363d;
+  border: 1px solid #80818350;
   position: relative;
   border-radius: 5px;
   color: #c9d1d9;
-  background-color: #0d1117;
+  background: none;
 }
 
 .dropdown-input {
@@ -217,4 +222,23 @@ button:focus {
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 5px;
+}
+
+.four-zero-four-bg {
+  text-align: center;
+}
+
+.four-zero-four-bg .title {
+  letter-spacing: 10px;
+  font-size: 68px;
+}
+
+.four-zero-four-bg .subtitle {
+  color: #fff;
+  font-size: 20px;
+  margin-top: 1.5rem;
+}
+
+span.form-error-title {
+  font-family: 'Space Mono', monospace;
 }
