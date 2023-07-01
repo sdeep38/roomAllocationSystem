@@ -1,9 +1,8 @@
 import axios from 'axios'
-import React, { useContext, useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import FormError from '../components/FormError'
 import SelectDropdown from '../components/SelectDropdown'
-import { AuthContext } from '../context/authContext'
 import '../styles/Login.css'
 
 
@@ -15,36 +14,38 @@ export default function Login() {
   })
 
 
+  //request validation status 
   const [resStatus, setResStatus] = useState(null)
+  const [err, setError] = useState(null)
 
-  const navigate = useNavigate()
-
-  const { login } = useContext(AuthContext)
-
+  //set inputs
   const handleChange = (e) => {
     setInputs(prev => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
+  //handle form submission
   const handleSubmit = async () => {
     try {
       const res = await axios.post('/auth/forgotPassword/', inputs)
       setResStatus(res.data)
     }
     catch (err) {
-      setResStatus(err.response.data)
+      setResStatus(err.response.data.message)
     }
   }
 
+  //validate form
   const validateForm = (e) => {
     e.preventDefault()
+    setError(null)
 
-    const isValidEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
+    let isValidEmail = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
     if (inputs.username.match(isValidEmail) && inputs.user_type) {
       handleSubmit()
     }
     else {
-      alert('Invalid credentials')
+      setError('All Fields are required')
     }
   }
 
@@ -67,6 +68,7 @@ export default function Login() {
         <div className="row">
           <div className="col-md-4 col-lg-4 col-sm-12 offset-md-4">
             {resStatus && <FormError value={resStatus?.message} status={resStatus?.status === 'success' ? 'success' : 'danger'} dismissable={false}/>}
+            {err && <FormError value={err} status='danger' dismissable={false}/>}
 
             <div className="form-section">
 
@@ -97,7 +99,7 @@ export default function Login() {
                 
 
               {resStatus?.status === 'success' &&
-                  <div className="password-reset-link mt-3 text-info text-center">Verification link : <Link to={resStatus?.link} target='_blank' rel='noopener noreferrer'>verify</Link></div>
+                  <div className="password-reset-link mt-3 text-info text-center">Verification link (valid for 5 min): <a href={resStatus?.link} target='_blank' rel='noopener noreferrer'>verify</a></div>
                 }
 
               </div>
