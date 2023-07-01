@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { AuthContext } from '../context/authContext'
 import '../styles/Home.css'
 import profileIcon from '../images/profile-icon.png'
-import profileImage from '../images/profile.jpg'
+import profileImage from '../images/no_image.png'
 import { useState } from 'react'
 import Header from './Header'
 
