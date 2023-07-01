@@ -47,59 +47,6 @@ export default function Home() {
         console.log("Api calling for value = ", e.target.value)
     }
 
-    const userRoleOptions = [
-        {
-            label: "Student",
-            value: "student",
-        },
-        {
-            label: "Admin",
-            value: "admin",
-        }
-    ]
-
-    const blockOptions = [
-        {
-            label: "A",
-            value: "A",
-        },
-        {
-            label: "B",
-            value: "B",
-        },
-        {
-            label: "C",
-            value: "C",
-        },
-        {
-            label: "D",
-            value: "D",
-        },
-        {
-            label: "E",
-            value: "E",
-        },
-    ]
-
-    const floorOptions = [
-        {
-            label: "Ground",
-            value: "0",
-        },
-        {
-            label: "First",
-            value: "1",
-        },
-        {
-            label: "Second",
-            value: "2",
-        },
-        {
-            label: "Third",
-            value: "3",
-        },
-    ]
-
     return (
         <>
             <Header title='Dashboard' />
@@ -130,7 +77,7 @@ export default function Home() {
                                             
                                         </ul>
                                         
-                                        {currentUser?.authorizedAs == 'admin' && <a href='/allocateRooms' type="button" className="btn btn-outline-success mb-3"><i className='fa fa-plus'></i> New Allocation</a>}
+                                        {currentUser?.authorizedAs === 'admin' && <Link to={'/allocateRooms'} type="button" className="btn btn-outline-success mb-3"><i className='fa fa-plus'></i> New Allocation</Link>}
 
                                     </div>
                                     
@@ -631,7 +578,6 @@ export default function Home() {
                                         </div>
                                     </div>
 
-                                    <div className='footer-text'><button type="button" className="btn btn-outline-info">Generate PDF report</button></div>
 
                                 </div>
 
