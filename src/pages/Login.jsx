@@ -29,7 +29,7 @@ export default function Login() {
   const handleSubmit = async () => {
     try {
       await login(inputs)
-      if(currentUser.isuserloggedin) navigate('/dashboard')
+      if (currentUser) navigate('/dashboard')
     }
     catch (err) {
       setError(err.response.data)
@@ -40,10 +40,10 @@ export default function Login() {
     e.preventDefault()
 
     //valid user type
-    if (!inputs.user_type) {
-      setError("Required Field 'Login As' ")
+    if (!inputs.username || !inputs.password || !inputs.user_type) {
+      setError({ message: "All fields are required", status: 'error' })
     }
-    else{
+    else {
       console.log(inputs);
       handleSubmit()
     }
@@ -76,7 +76,7 @@ export default function Login() {
                 {/* <div className="logo">
                   <img src="https://1000logos.net/wp-content/themes/redwaves-lite/pic/mercedes-logo-sm.png" alt="Logo">
                 </div> */}
-                <a href='/' className="brand">rk hall</a>
+                <Link to={'/login'} className="brand">rk hall</Link>
               </div>
 
               <div className="userform">
@@ -84,7 +84,7 @@ export default function Login() {
                   {/* <h3 className="h3 mb-2">User Login</h3> */}
                   <div className="col-12">
                     <label htmlFor="inputUsername" className="form-label">Email address</label>
-                    <input type="email" className="form-control login-box-input" id="inputUsername" name='username' onChange={handleChange} autoCapitalize='off' autoCorrect='off' autoComplete='off' autoFocus/>
+                    <input type="email" className="form-control login-box-input" id="inputUsername" name='username' onChange={handleChange} autoCapitalize='off' autoCorrect='off' autoComplete='off' autoFocus />
                   </div>
                   <div className="col-12">
                     <label htmlFor="inputPassword" className="form-label">Password</label>
@@ -106,7 +106,7 @@ export default function Login() {
 
 
                   <div className="col-lg-4">
-                  <SelectDropdown placeHolder="Login As" name = 'user_type' Options={userRoleOptions} isMulti={false} isSearchable={false} onChange = {(value) => setInputs(prev => ({...prev, user_type : value }))}/>
+                    <SelectDropdown placeHolder="Login As" name='user_type' Options={userRoleOptions} isMulti={false} isSearchable={false} onChange={(value) => setInputs(prev => ({ ...prev, user_type: value }))} />
 
                   </div>
                   <div className="col-lg-8">
@@ -114,9 +114,9 @@ export default function Login() {
                     <button type="submit" id="login-btn" className="btn" onClick={validateForm}>Login</button>
                   </div>
 
-                  <div id="keyHelp" className="form-text"><Link className="fpass" to={'/fpass'}>
-                    <span className="fa fa-key"></span> Forgot Password</Link></div>
                 </form>
+                <div id="keyHelp" className="form-text"><Link className="fpass" to={'/fpass'}>
+                  <span className="fa fa-key"></span> Forgot Password</Link></div>
 
               </div>
             </div>
