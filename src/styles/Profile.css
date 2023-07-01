@@ -70,7 +70,7 @@
 }
 
 .profile-input#inputName {
-    text-transform: capitalize;
+    text-transform: uppercase;
 }
 
 form#PasswordChangeForm .profile-input:focus {
@@ -175,4 +175,20 @@ a.setting-tabs:hover{
     font-size: 18px;
     border: none;
 
+}
+
+.profile ul#settings-tab {
+    border-color: #67768b;
+} 
+
+.profile ul li button.nav-link {
+    color: #8b949e;
+    font-size: 18px;
+    padding: 15px 20px !important;
+    border: none !important;
+}
+.profile ul li button.nav-link.active {
+    background: none;
+    color: #fff;
+    border-bottom: 3px solid #fff !important;
 }

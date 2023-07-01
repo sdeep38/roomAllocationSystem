@@ -12,13 +12,13 @@
 .form-section {
     /* box-shadow: rgba(0, 0, 0, 0.2) 0px 18px 50px -10px; */
     border-radius: 6px;
-    border: 1px solid #21262d;
-    background: #161b22;
+    border: 1px solid #80818350;
+    background: rgba(135, 134, 134, 0.286);
 }
 
 .form-top {
     padding: 1em;
-    border-bottom: 1px solid #21262d;
+    border-bottom: 1px solid #80818350;
 }
 
 form .h3 {
